@@ -3,7 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dalamud.Game.Chat;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 using Dalamud.Interface.Windowing;
 using MoonbaseOmega.Windows;
 using Dalamud.Game.Command;
@@ -104,14 +106,12 @@ public class Plugin : IDalamudPlugin {
         return Math.Min(Math.Max((int) volume, 0), 100);
     }
 
-    private void ChatMessage(
-        XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled
-    ) {
+    private void ChatMessage(IHandleableChatMessage message) {
         if (Services.ClientState.TerritoryType != SinusArdorum && Services.ClientState.TerritoryType != Phaenna && Services.ClientState.TerritoryType != Oizys) return;
-        if (!this.configuration.ChatTypes!.Contains(type)) return;
+        if (!this.configuration.ChatTypes!.Contains(message.LogKind)) return;
 
         try {
-            var text = ExtractTextButGoated(message);
+            var text = ExtractTextButGoated(message.Message);
             if (string.IsNullOrWhiteSpace(text)) return;
             Task.Run(() => this.speechManager.TrySpeak(text));
         } catch (Exception e) {
