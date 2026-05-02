@@ -16,6 +16,7 @@ public class Configuration : IPluginConfiguration {
     [JsonProperty] public int Volume = 50;
     [JsonProperty] public List<XivChatType>? ChatTypes;
     [JsonProperty] public bool AutoDeleteLogFile;
+    [JsonProperty] public bool EnableEverywhere;
 
     public void Save() {
         Services.PluginInterface.SavePluginConfig(this);
