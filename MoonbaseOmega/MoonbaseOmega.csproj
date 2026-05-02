@@ -1,9 +1,9 @@
-<Project Sdk="Dalamud.NET.Sdk/15.0.0">
+﻿<Project Sdk="Dalamud.NET.Sdk/15.0.0">
     <PropertyGroup>
         <Version>1.1.0.3</Version>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MoonbaseOmega.TextToSpeech\MoonbaseOmega.TextToSpeech.csproj"/>
+        <ProjectReference Include="..\MoonbaseOmega.TextToSpeech\MoonbaseOmega.TextToSpeech.csproj" />
     </ItemGroup>
 </Project>

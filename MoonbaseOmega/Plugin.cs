@@ -107,7 +107,10 @@ public class Plugin : IDalamudPlugin {
     }
 
     private void ChatMessage(IHandleableChatMessage message) {
-        if (Services.ClientState.TerritoryType != SinusArdorum && Services.ClientState.TerritoryType != Phaenna && Services.ClientState.TerritoryType != Oizys) return;
+        if (!this.configuration.EnableEverywhere
+            && Services.ClientState.TerritoryType != SinusArdorum
+            && Services.ClientState.TerritoryType != Phaenna
+            && Services.ClientState.TerritoryType != Oizys) return;
         if (!this.configuration.ChatTypes!.Contains(message.LogKind)) return;
 
         try {

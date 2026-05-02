@@ -24,6 +24,7 @@ public class ConfigWindow : Window, IDisposable {
     private int volume;
     private List<XivChatType> chatTypes;
     private bool autoDeleteLogFile;
+    private bool enableEverywhere;
     private bool changed;
 
     private int chatTypeSelection = -1;
@@ -37,6 +38,7 @@ public class ConfigWindow : Window, IDisposable {
         this.volume = this.configuration.Volume;
         this.chatTypes = this.configuration.ChatTypes!.ToList();
         this.autoDeleteLogFile = this.configuration.AutoDeleteLogFile;
+        this.enableEverywhere = this.configuration.EnableEverywhere;
 
         this.configuration.OnConfigurationSaved += this.OnConfigurationSaved;
     }
@@ -76,6 +78,11 @@ public class ConfigWindow : Window, IDisposable {
                                    Unfortunately, it isn't possible to disable this log file, as DECtalk is ancient crusty software from the 80s.
                                    When enabled, Moonbase Omega will automatically delete this log file for you when the plugin unloads. Sorry about the mess!
                                    """);
+
+        if (ImGui.Checkbox("Enable everywhere", ref this.enableEverywhere)) {
+            this.RecalculateChanged();
+        }
+        ImGuiComponents.HelpMarker("Enables TTS everywhere. This will get annoying really fast!");
 
         if (ImGui.Button("Force Stop")) {
             Task.Run(() => this.speechManager.ResetAll());
@@ -139,7 +146,8 @@ public class ConfigWindow : Window, IDisposable {
         this.changed = this.maxInstances != this.configuration.MaxInstances
                        || this.volume != this.configuration.Volume
                        || !this.chatTypes.SequenceEqual(this.configuration.ChatTypes!)
-                       || this.autoDeleteLogFile != this.configuration.AutoDeleteLogFile;
+                       || this.autoDeleteLogFile != this.configuration.AutoDeleteLogFile
+                       || this.enableEverywhere != this.configuration.EnableEverywhere;
     }
 
     private void ApplyChanges() {
@@ -147,6 +155,7 @@ public class ConfigWindow : Window, IDisposable {
         this.configuration.Volume = this.volume;
         this.configuration.ChatTypes = this.chatTypes.ToList();
         this.configuration.AutoDeleteLogFile = this.autoDeleteLogFile;
+        this.configuration.EnableEverywhere = this.enableEverywhere;
         this.configuration.Save();
         this.changed = false;
     }
@@ -156,6 +165,7 @@ public class ConfigWindow : Window, IDisposable {
         this.volume = this.configuration.Volume;
         this.chatTypes = this.configuration.ChatTypes!.ToList();
         this.autoDeleteLogFile = this.configuration.AutoDeleteLogFile;
+        this.enableEverywhere = this.configuration.EnableEverywhere;
         this.changed = false;
     }
 
